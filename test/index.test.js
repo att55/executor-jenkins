@@ -500,7 +500,7 @@ describe('index', () => {
                     cleanupScript: xmlescape(cleanupScript)
                 });
 
-                assert.equal(executor._loadJobXml(config), xml);
+                assert.equal(executor._loadJobXml(config, config.annotations), xml);
             });
         });
 
@@ -558,10 +558,11 @@ rm -f docker-compose.yml
                     cleanupScript: xmlescape(cleanupScript)
                 });
 
-                assert.equal(executor._loadJobXml(config), jobXml);
+                assert.equal(executor._loadJobXml(config, config.annotations), jobXml);
             });
 
             it('use provided options correctly', () => {
+                const proviededNodeLabel = 'foo-label';
                 const composeCommand = 'fake-docker-compose';
                 const prefix = 'foo-prefix';
                 const launchVersion = 'foo-ver';
@@ -574,7 +575,7 @@ rm -f docker-compose.yml
                         host: 'jenkins',
                         username: 'admin',
                         password: 'fakepassword',
-                        nodeLabel
+                        nodeLabel: proviededNodeLabel
                     },
                     docker: {
                         composeCommand,
@@ -620,12 +621,14 @@ rm -f docker-compose.yml
                 });
 
                 jobXml = tinytim.render(TEST_JOB_XML, {
-                    nodeLabel,
+                    nodeLabel: proviededNodeLabel,
                     buildScript: xmlescape(buildScript),
                     cleanupScript: xmlescape(cleanupScript)
                 });
 
-                assert.equal(executor._loadJobXml(config), jobXml);
+                config.annotations = { 'beta.screwdriver.cd/nodeLabel': proviededNodeLabel };
+
+                assert.equal(executor._loadJobXml(config, config.annotations), jobXml);
             });
         });
     });
