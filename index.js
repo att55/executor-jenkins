@@ -116,13 +116,14 @@ class JenkinsExecutor extends Executor {
      * Jenkins job config xml
      * @method _loadJobXml
      * @param  {Object}   config        A configuration object psssed to _start
+     * @param  {Object}   annotations   Annotaions psssed to _start
      * @return {String}
      * @private
      */
     _loadJobXml(config, annotations) {
         const { buildScript, cleanupScript } = this._taskScript(config);
         const nodeLabel = annotations[ANNOTATE_BUILD_NODE_LABEL]
-            ? this.nodeLabel.concat(`-${annotations[ANNOTATE_BUILD_NODE_LABEL]}`) : this.nodeLabel;
+            ? `${this.nodeLabel}-${annotations[ANNOTATE_BUILD_NODE_LABEL]}` : this.nodeLabel;
 
         const variables = {
             nodeLabel: xmlescape(nodeLabel),
