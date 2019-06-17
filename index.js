@@ -116,7 +116,7 @@ class JenkinsExecutor extends Executor {
      * Jenkins job config xml
      * @method _loadJobXml
      * @param  {Object}   config        A configuration object psssed to _start
-     * @param  {Object}   annotations   Annotaions psssed to _start
+     * @param  {Object}   annotations   Annotations psssed to _start
      * @return {String}
      * @private
      */
