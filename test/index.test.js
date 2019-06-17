@@ -500,7 +500,8 @@ describe('index', () => {
                     cleanupScript: xmlescape(cleanupScript)
                 });
 
-                assert.equal(executor._loadJobXml(config, config.annotations), xml);
+                const parsedAnnotations = {};
+                assert.equal(executor._loadJobXml(config, parsedAnnotations), xml);
             });
         });
 
@@ -558,11 +559,11 @@ rm -f docker-compose.yml
                     cleanupScript: xmlescape(cleanupScript)
                 });
 
-                assert.equal(executor._loadJobXml(config, config.annotations), jobXml);
+                const parsedAnnotations = {};
+                assert.equal(executor._loadJobXml(config, parsedAnnotations), jobXml);
             });
 
             it('use provided options correctly', () => {
-                const proviededNodeLabel = 'foo-label';
                 const composeCommand = 'fake-docker-compose';
                 const prefix = 'foo-prefix';
                 const launchVersion = 'foo-ver';
@@ -575,7 +576,6 @@ rm -f docker-compose.yml
                         host: 'jenkins',
                         username: 'admin',
                         password: 'fakepassword',
-                        nodeLabel: proviededNodeLabel
                     },
                     docker: {
                         composeCommand,
@@ -620,15 +620,16 @@ rm -f docker-compose.yml
                     composeYml
                 });
 
+                const providedNodeLabel = 'foo-label';
+                const parsedAnnotations = { nodeLabel: providedNodeLabel };
+
                 jobXml = tinytim.render(TEST_JOB_XML, {
-                    nodeLabel: proviededNodeLabel,
+                    nodeLabel: `screwdriver-${providedNodeLabel}`,
                     buildScript: xmlescape(buildScript),
                     cleanupScript: xmlescape(cleanupScript)
                 });
 
-                config.annotations = { 'beta.screwdriver.cd/nodeLabel': proviededNodeLabel };
-
-                assert.equal(executor._loadJobXml(config, config.annotations), jobXml);
+                assert.equal(executor._loadJobXml(config, parsedAnnotations), jobXml);
             });
         });
     });
