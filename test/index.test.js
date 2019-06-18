@@ -501,6 +501,7 @@ describe('index', () => {
                 });
 
                 const parsedAnnotations = {};
+
                 assert.equal(executor._loadJobXml(config, parsedAnnotations), xml);
             });
         });
@@ -560,6 +561,7 @@ rm -f docker-compose.yml
                 });
 
                 const parsedAnnotations = {};
+
                 assert.equal(executor._loadJobXml(config, parsedAnnotations), jobXml);
             });
 
@@ -575,7 +577,7 @@ rm -f docker-compose.yml
                     jenkins: {
                         host: 'jenkins',
                         username: 'admin',
-                        password: 'fakepassword',
+                        password: 'fakepassword'
                     },
                     docker: {
                         composeCommand,
